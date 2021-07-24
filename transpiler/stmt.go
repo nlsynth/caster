@@ -8,11 +8,13 @@ import (
 
 type stmtTranspiler struct {
 	as *ast.Stmt
+	mt *ModuleTranspiler
 }
 
-func newStmtTranspiler(as *ast.Stmt) *stmtTranspiler {
+func newStmtTranspiler(mt *ModuleTranspiler, as *ast.Stmt) *stmtTranspiler {
 	stp := new(stmtTranspiler)
 	stp.as = as
+	stp.mt = mt
 	return stp
 }
 
@@ -42,5 +44,6 @@ func (stp *stmtTranspiler) writeExpr(e *ast.Expr, w io.Writer) {
 }
 
 func (stp *stmtTranspiler) writeGo(g *ast.GoStmt, w io.Writer) {
-	fmt.Fprintf(w, "_s_%s <= 1", *g.Decl.Go)
+	s := stp.mt.getStageFromAst(g.Stage)
+	fmt.Fprintf(w, "%s <= 1", s.stateVariableName())
 }

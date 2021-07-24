@@ -93,8 +93,18 @@ func (mt *ModuleTranspiler) writeStage(s *Stage, w io.Writer) {
 	fmt.Fprintf(w, "  if (%s) begin\n", s.stateVariableName())
 	fmt.Fprintf(w, "   %s <= 0;\n", s.stateVariableName())
 	for _, st := range s.as.Stmts {
-		stp := newStmtTranspiler(st)
+		stp := newStmtTranspiler(mt, st)
 		stp.write(w)
 	}
 	fmt.Fprintf(w, "  end\n")
+}
+
+func (mt *ModuleTranspiler) getStageFromAst(as *ast.Stage) *Stage {
+	// linear search for now.
+	for _, s := range mt.m.stages {
+		if s.as == as {
+			return s
+		}
+	}
+	return nil
 }

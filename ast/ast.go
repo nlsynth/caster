@@ -28,7 +28,8 @@ type Stmt struct {
 
 // GoStmt -
 type GoStmt struct {
-	Decl *GoStmtNode
+	Stage *Stage
+	Decl  *GoStmtNode
 }
 
 // Expr -
@@ -60,6 +61,8 @@ func GetProgram(fn string, file *os.File) (*Program, error) {
 
 	cv := newConverter(&pf)
 	p := cv.convert()
+	rs := newResolver(p)
+	rs.resolve()
 
 	return p, nil
 }
