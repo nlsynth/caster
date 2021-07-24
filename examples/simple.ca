@@ -1,0 +1,13 @@
+module a(p input, q output) {
+    initial stage s1 {
+        q <= p
+        go s2
+    }
+    stage s2 {
+        q <= 1
+	go s3
+    }
+    stage s3 {
+        q <= 0
+    }
+}
