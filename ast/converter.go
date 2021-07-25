@@ -78,11 +78,20 @@ func (cv *Converter) convertExpr1(e1 *Expr1Node) *Expr {
 	if e1.RHS == nil {
 		return cv.convertExpr9(e1.LHS)
 	}
-	e := new(Expr)
+	var e *Expr
 	rhs := *e1.RHS
-	e.Op = fmt.Sprintf("%s", rhs[0].Op)
-	e.LHS = cv.convertExpr9(e1.LHS)
-	e.RHS = cv.convertExpr9(rhs[0].Node)
+	for i := 0; i < len(rhs); i++ {
+		if e == nil {
+			e = new(Expr)
+			e.LHS = cv.convertExpr9(e1.LHS)
+		} else {
+			t := new(Expr)
+			t.LHS = e
+			e = t
+		}
+		e.Op = fmt.Sprintf("%s", rhs[i].Op)
+		e.RHS = cv.convertExpr9(rhs[i].Node)
+	}
 	return e
 }
 
