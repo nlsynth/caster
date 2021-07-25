@@ -47,11 +47,15 @@ type WidthDecl struct {
 
 // StageDecl -
 type StageDecl struct {
-	Initial *string     `parser:"@Initial?"`
-	Empty   string      `parser:"'stage'"`
-	Name    string      `parser:"@Ident '{'"`
-	Stmts   []*StmtNode `parser:"@@*"`
-	Close   string      `parser:"'}'"`
+	Initial *string       `parser:"@Initial?"`
+	Empty   string        `parser:"'stage'"`
+	Name    string        `parser:"@Ident"`
+	Stmts   *StmtListNode `parser:"@@"`
+}
+
+// StmtListNode -
+type StmtListNode struct {
+	Stmts []*StmtNode `parser:"'{' @@* '}'"`
 }
 
 // StmtNode -
