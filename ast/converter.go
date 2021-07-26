@@ -37,10 +37,10 @@ func (cv *Converter) convertModule(md *ModuleDecl) *Module {
 func (cv *Converter) convertStage(sd *StageDecl) *Stage {
 	st := new(Stage)
 	st.Decl = sd
-	st.Stmts = make([]*Stmt, len(sd.Stmts.Stmts))
+	st.Stmts.Stmts = make([]*Stmt, len(sd.Stmts.Stmts))
 	for i, n := range sd.Stmts.Stmts {
 		s := cv.convertStmt(n)
-		st.Stmts[i] = s
+		st.Stmts.Stmts[i] = s
 	}
 	return st
 }

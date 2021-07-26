@@ -61,12 +61,19 @@ type StmtListNode struct {
 // StmtNode -
 type StmtNode struct {
 	Go   *GoStmtNode `parser:"@@ |"`
-	Expr *Expr0Node  `parser:"@@"`
+	Expr *Expr0Node  `parser:"@@ |"`
+	If   *IfStmtNode `parser:"@@"`
 }
 
 // GoStmtNode -
 type GoStmtNode struct {
 	Go *string `parser:"'go' @Ident"`
+}
+
+// IfStmtNode -
+type IfStmtNode struct {
+	Cond  *Expr0Node    `parser:"'if' @@"`
+	Stmts *StmtListNode `parser:"@@"`
 }
 
 // Operator -

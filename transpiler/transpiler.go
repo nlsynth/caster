@@ -92,7 +92,7 @@ func (mt *ModuleTranspiler) writeStage(s *Stage, w io.Writer) {
 	fmt.Fprintf(w, "  // stage %v\n", s.as.GetName())
 	fmt.Fprintf(w, "  if (%s) begin\n", s.stateVariableName())
 	fmt.Fprintf(w, "   %s <= 0;\n", s.stateVariableName())
-	for _, st := range s.as.Stmts {
+	for _, st := range s.as.Stmts.Stmts {
 		stp := newStmtTranspiler(mt, st)
 		stp.write(w)
 	}

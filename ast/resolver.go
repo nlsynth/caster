@@ -40,7 +40,7 @@ func (mr *moduleResolver) resolve() {
 }
 
 func (mr *moduleResolver) resolveStage(stg *Stage) {
-	for _, s := range stg.Stmts {
+	for _, s := range stg.Stmts.Stmts {
 		mr.resolveStmt(s)
 	}
 }

@@ -16,6 +16,11 @@ type Module struct {
 // Stage -
 type Stage struct {
 	Decl  *StageDecl
+	Stmts StmtList
+}
+
+// StmtList -
+type StmtList struct {
 	Stmts []*Stmt
 }
 

@@ -11,6 +11,7 @@ var (
 		{Name: "Number", Pattern: `(\d*\.)?\d+`, Action: nil},
 		{Name: "Go", Pattern: `go`, Action: nil},
 		{Name: "Initial", Pattern: `initial`, Action: nil},
+		{Name: "If", Pattern: `if`, Action: nil},
 		{Name: "Ident", Pattern: `[a-zA-Z_]\w*`, Action: nil},
 		{Name: "Paren", Pattern: `[\{\}\(\)]`, Action: nil},
 		{Name: "Assign", Pattern: `<=`, Action: nil},
