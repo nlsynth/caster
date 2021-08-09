@@ -54,6 +54,9 @@ func (cv *Converter) convertStmt(sn *StmtNode) *Stmt {
 	if s.Decl.Go != nil {
 		s.Go = cv.convertGo(s.Decl.Go)
 	}
+	if s.Decl.If != nil {
+		s.If = cv.convertIf(s.Decl.If)
+	}
 	return s
 }
 
@@ -61,6 +64,12 @@ func (cv *Converter) convertGo(gn *GoStmtNode) *GoStmt {
 	gs := new(GoStmt)
 	gs.Decl = gn
 	return gs
+}
+
+func (cv *Converter) convertIf(in *IfStmtNode) *IfStmt {
+	is := new(IfStmt)
+	is.Decl = in
+	return is
 }
 
 func (cv *Converter) convertExpr0(e0 *Expr0Node) *Expr {

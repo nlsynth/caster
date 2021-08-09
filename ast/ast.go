@@ -29,6 +29,7 @@ type Stmt struct {
 	Decl *StmtNode
 	Expr *Expr
 	Go   *GoStmt
+	If   *IfStmt
 }
 
 // GoStmt -
@@ -44,6 +45,11 @@ type Expr struct {
 	Num *int
 	Str *string
 	Op  string
+}
+
+// IfStmt -
+type IfStmt struct {
+	Decl *IfStmtNode
 }
 
 // GetName -
