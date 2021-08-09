@@ -9,9 +9,12 @@ var (
 	lexer = stateful.MustSimple([]stateful.Rule{
 		{Name: "String", Pattern: `"(\\"|[^"])*"`, Action: nil},
 		{Name: "Number", Pattern: `(\d*\.)?\d+`, Action: nil},
+		// Reserved keywords.
 		{Name: "Go", Pattern: `go`, Action: nil},
 		{Name: "Initial", Pattern: `initial`, Action: nil},
 		{Name: "If", Pattern: `if`, Action: nil},
+		{Name: "Reg", Pattern: `reg`, Action: nil},
+		// Operators.
 		{Name: "Ident", Pattern: `[a-zA-Z_]\w*`, Action: nil},
 		{Name: "Paren", Pattern: `[\{\}\(\)]`, Action: nil},
 		{Name: "Assign", Pattern: `<=`, Action: nil},

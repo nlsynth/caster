@@ -10,6 +10,7 @@ type ModuleDecl struct {
 	Name      string         `parser:"'module' @Ident"`
 	Interface *InterfaceDecl `parser:"@@"`
 	Start     string         `parser:"'{'"`
+	Regs      []*RegDecl     `parser:"@@*"`
 	Stages    []*StageDecl   `parser:"@@*"`
 	End       string         `parser:"'}'"`
 }
@@ -43,6 +44,18 @@ type PortDecl struct {
 // WidthDecl -
 type WidthDecl struct {
 	Width int `parser:"'#' @Number"`
+}
+
+// RegDecl -
+type RegDecl struct {
+	Reg   string     `parser:"'reg' @Ident"`
+	Tail  []*RegTail `parser:"@@*"`
+	Width *WidthDecl `parser:"@@?"`
+}
+
+// RegTail -
+type RegTail struct {
+	Name string `parser:"',' @Ident"`
 }
 
 // StageDecl -
