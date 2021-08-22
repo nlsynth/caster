@@ -85,8 +85,14 @@ type GoStmtNode struct {
 
 // IfStmtNode -
 type IfStmtNode struct {
-	Cond  *Expr0Node    `parser:"'if' @@"`
-	Stmts *StmtListNode `parser:"@@"`
+	Cond      *Expr0Node    `parser:"'if' @@"`
+	ThenStmts *StmtListNode `parser:"@@"`
+	ElseStmts *ElseNode     `parser:"@@?"`
+}
+
+// ElseNode -
+type ElseNode struct {
+	Stmts *StmtListNode `parser:"'else' @@"`
 }
 
 // Operator -

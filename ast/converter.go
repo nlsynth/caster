@@ -76,8 +76,12 @@ func (cv *Converter) convertIf(in *IfStmtNode) *IfStmt {
 	is := new(IfStmt)
 	is.Decl = in
 	is.Cond = cv.convertExpr0(in.Cond)
-	is.True = cv.convertStmtList(in.Stmts)
-	is.False = nil
+	is.Then = cv.convertStmtList(in.ThenStmts)
+	if in.ElseStmts == nil {
+		is.Else = nil
+	} else {
+		is.Else = cv.convertStmtList(in.ElseStmts.Stmts)
+	}
 	return is
 }
 

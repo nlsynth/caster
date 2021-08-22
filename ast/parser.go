@@ -13,6 +13,7 @@ var (
 		{Name: "Go", Pattern: `go`, Action: nil},
 		{Name: "Initial", Pattern: `initial`, Action: nil},
 		{Name: "If", Pattern: `if`, Action: nil},
+		{Name: "Else", Pattern: `else`, Action: nil},
 		{Name: "Reg", Pattern: `reg`, Action: nil},
 		// Operators.
 		{Name: "Ident", Pattern: `[a-zA-Z_]\w*`, Action: nil},

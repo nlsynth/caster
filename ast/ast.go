@@ -49,10 +49,10 @@ type Expr struct {
 
 // IfStmt -
 type IfStmt struct {
-	Decl  *IfStmtNode
-	Cond  *Expr
-	True  *StmtList
-	False *StmtList
+	Decl *IfStmtNode
+	Cond *Expr
+	Then *StmtList
+	Else *StmtList
 }
 
 // GetName -

@@ -26,6 +26,10 @@ func (stp *stmtTranspiler) write(w io.Writer) {
 	if stp.as.Go != nil {
 		stp.writeGo(stp.as.Go, w)
 	}
+	if stp.as.If != nil {
+		stp.writeIf(stp.as.If, w)
+		return
+	}
 	fmt.Fprint(w, ";\n")
 }
 
@@ -46,4 +50,11 @@ func (stp *stmtTranspiler) writeExpr(e *ast.Expr, w io.Writer) {
 func (stp *stmtTranspiler) writeGo(g *ast.GoStmt, w io.Writer) {
 	s := stp.mt.getStageFromAst(g.Stage)
 	fmt.Fprintf(w, "%s <= 1", s.stateVariableName())
+}
+
+func (stp *stmtTranspiler) writeIf(g *ast.IfStmt, w io.Writer) {
+	fmt.Fprint(w, "if (")
+	stp.writeExpr(g.Cond, w)
+	fmt.Fprint(w, ") begin\n    end\n")
+
 }

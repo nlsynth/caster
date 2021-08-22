@@ -40,6 +40,7 @@ func (mt *ModuleTranspiler) transpile(w io.Writer) {
 		mt.writeStage(s, w)
 	}
 	fmt.Fprint(w, " end\n")
+	fmt.Fprint(w, " end\n")
 	fmt.Fprint(w, "endmodule\n")
 }
 
