@@ -37,12 +37,18 @@ func (cv *Converter) convertModule(md *ModuleDecl) *Module {
 func (cv *Converter) convertStage(sd *StageDecl) *Stage {
 	st := new(Stage)
 	st.Decl = sd
-	st.Stmts.Stmts = make([]*Stmt, len(sd.Stmts.Stmts))
-	for i, n := range sd.Stmts.Stmts {
-		s := cv.convertStmt(n)
-		st.Stmts.Stmts[i] = s
-	}
+	st.Stmts = *cv.convertStmtList(sd.Stmts)
 	return st
+}
+
+func (cv *Converter) convertStmtList(sln *StmtListNode) *StmtList {
+	sl := new(StmtList)
+	sl.Stmts = make([]*Stmt, len(sln.Stmts))
+	for i, n := range sln.Stmts {
+		s := cv.convertStmt(n)
+		sl.Stmts[i] = s
+	}
+	return sl
 }
 
 func (cv *Converter) convertStmt(sn *StmtNode) *Stmt {
@@ -69,6 +75,9 @@ func (cv *Converter) convertGo(gn *GoStmtNode) *GoStmt {
 func (cv *Converter) convertIf(in *IfStmtNode) *IfStmt {
 	is := new(IfStmt)
 	is.Decl = in
+	is.Cond = cv.convertExpr0(in.Cond)
+	is.True = cv.convertStmtList(in.Stmts)
+	is.False = nil
 	return is
 }
 
