@@ -12,6 +12,24 @@ type ModuleTranspiler struct {
 	m *Module
 }
 
+type Transpiler struct {
+	mt []*ModuleTranspiler
+}
+
+func newTranspiler() *Transpiler {
+	t := new(Transpiler)
+	t.mt = make([]*ModuleTranspiler, 0)
+	return t
+}
+
+func (t *Transpiler) transpileProgram(p *ast.Program) {
+	for _, am := range p.Modules {
+		m := newModule(am)
+		mt := newModuleTranspiler(m)
+		mt.transpile(os.Stdout)
+	}
+}
+
 func newModuleTranspiler(m *Module) *ModuleTranspiler {
 	mt := new(ModuleTranspiler)
 	mt.m = m
@@ -20,11 +38,8 @@ func newModuleTranspiler(m *Module) *ModuleTranspiler {
 
 // Transpile actually transpiles AST into Verilog code.
 func Transpile(p *ast.Program) {
-	for _, am := range p.Modules {
-		m := newModule(am)
-		mt := newModuleTranspiler(m)
-		mt.transpile(os.Stdout)
-	}
+	t := newTranspiler()
+	t.transpileProgram(p)
 }
 
 func (mt *ModuleTranspiler) transpile(w io.Writer) {
