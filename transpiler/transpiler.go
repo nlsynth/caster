@@ -15,13 +15,14 @@ type Transpiler struct {
 	mt []*ModuleTranspiler
 }
 
-// NewTranspiler creates
+// NewTranspiler creates a Transpiler.
 func NewTranspiler() *Transpiler {
 	t := new(Transpiler)
 	t.mt = make([]*ModuleTranspiler, 0)
 	return t
 }
 
+// TranspileProgram processes a file.
 func (t *Transpiler) TranspileProgram(p *ast.Program) {
 	for _, am := range p.Modules {
 		m := newModule(am)
@@ -30,9 +31,11 @@ func (t *Transpiler) TranspileProgram(p *ast.Program) {
 	}
 }
 
+// Output outputs transpiled code.
 func (t *Transpiler) Output(w io.Writer) {
+	i := newIndenter(w)
 	for _, mt := range t.mt {
-		mt.transpile((w))
+		mt.output(i)
 	}
 }
 
@@ -42,7 +45,7 @@ func newModuleTranspiler(m *Module) *ModuleTranspiler {
 	return mt
 }
 
-func (mt *ModuleTranspiler) transpile(w io.Writer) {
+func (mt *ModuleTranspiler) output(w io.Writer) {
 	fmt.Fprintf(w, "module %v(\n", mt.m.getName())
 	mt.writePorts(w)
 	fmt.Fprint(w, ");\n\n")
