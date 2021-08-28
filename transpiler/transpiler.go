@@ -4,7 +4,6 @@ import (
 	"caster/ast"
 	"fmt"
 	"io"
-	"os"
 )
 
 // ModuleTranspiler -
@@ -16,17 +15,24 @@ type Transpiler struct {
 	mt []*ModuleTranspiler
 }
 
-func newTranspiler() *Transpiler {
+// NewTranspiler creates
+func NewTranspiler() *Transpiler {
 	t := new(Transpiler)
 	t.mt = make([]*ModuleTranspiler, 0)
 	return t
 }
 
-func (t *Transpiler) transpileProgram(p *ast.Program) {
+func (t *Transpiler) TranspileProgram(p *ast.Program) {
 	for _, am := range p.Modules {
 		m := newModule(am)
 		mt := newModuleTranspiler(m)
-		mt.transpile(os.Stdout)
+		t.mt = append(t.mt, mt)
+	}
+}
+
+func (t *Transpiler) Output(w io.Writer) {
+	for _, mt := range t.mt {
+		mt.transpile((w))
 	}
 }
 
@@ -34,12 +40,6 @@ func newModuleTranspiler(m *Module) *ModuleTranspiler {
 	mt := new(ModuleTranspiler)
 	mt.m = m
 	return mt
-}
-
-// Transpile actually transpiles AST into Verilog code.
-func Transpile(p *ast.Program) {
-	t := newTranspiler()
-	t.transpileProgram(p)
 }
 
 func (mt *ModuleTranspiler) transpile(w io.Writer) {
