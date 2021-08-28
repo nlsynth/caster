@@ -20,8 +20,9 @@ func processFile(fn string, file *os.File, t *transpiler.Transpiler) {
 }
 
 func main() {
-	t := transpiler.NewTranspiler()
+	ofn := flag.String("o", "", "output file name")
 	flag.Parse()
+	t := transpiler.NewTranspiler()
 	for _, fn := range flag.Args() {
 		glog.Infof("fn=%v", fn)
 		r, err := os.Open(fn)
@@ -31,5 +32,15 @@ func main() {
 		}
 		processFile(fn, r, t)
 	}
-	t.Output(os.Stdout)
+	ow := os.Stdout
+	if *ofn != "" {
+		var err error
+		ow, err = os.Create(*ofn)
+		if err != nil {
+			glog.Errorf("Failed to open [%v]", *ofn)
+			return
+		}
+		defer ow.Close()
+	}
+	t.Output(ow)
 }
