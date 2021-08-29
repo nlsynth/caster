@@ -1,9 +1,13 @@
 package transpiler
 
-import "io"
+import (
+	"io"
+	"strings"
+)
 
 type indenter struct {
 	w io.Writer
+	s string
 }
 
 func newIndenter(w io.Writer) *indenter {
@@ -13,5 +17,17 @@ func newIndenter(w io.Writer) *indenter {
 }
 
 func (i *indenter) Write(p []byte) (n int, err error) {
-	return i.w.Write(p)
+	i.s += string(p)
+	return len(p), nil
+}
+
+func (i *indenter) flush() error {
+	tokens := strings.Split(i.s, "\n")
+	for _, t := range tokens {
+		_, err := i.w.Write([]byte(t + "\n"))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

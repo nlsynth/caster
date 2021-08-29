@@ -37,6 +37,7 @@ func (t *Transpiler) Output(w io.Writer) {
 	for _, mt := range t.mt {
 		mt.output(i)
 	}
+	i.flush()
 }
 
 func newModuleTranspiler(m *Module) *ModuleTranspiler {
