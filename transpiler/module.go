@@ -41,13 +41,8 @@ func newModule(am *ast.Module) *Module {
 }
 
 func (m *Module) preparePorts() {
-	ports := m.am.Decl.Interface.Ports
-	if ports == nil {
-		return
-	}
-	m.addPort(ports.Port0)
-	for _, p := range ports.Tail {
-		m.addPort(p.Port)
+	for _, p := range m.am.Ports {
+		m.addPort(p.Decl)
 	}
 	if len(m.ports) == 0 {
 		return

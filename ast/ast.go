@@ -11,6 +11,12 @@ type Program struct {
 type Module struct {
 	Decl   *ModuleDecl
 	Stages []*Stage
+	Ports  []*Port
+}
+
+// Port -
+type Port struct {
+	Decl *PortDecl
 }
 
 // Stage -

@@ -26,12 +26,34 @@ func (cv *Converter) convert() *Program {
 func (cv *Converter) convertModule(md *ModuleDecl) *Module {
 	m := new(Module)
 	m.Decl = md
+	// Stages.
 	m.Stages = make([]*Stage, len(md.Stages))
 	for i, d := range md.Stages {
 		s := cv.convertStage(d)
 		m.Stages[i] = s
 	}
+	// Ports.
+	nports := 0
+	if md.Interface.Ports != nil {
+		if md.Interface.Ports.Port0 != nil {
+			nports = 1
+		}
+		nports += len(md.Interface.Ports.Tail)
+	}
+	m.Ports = make([]*Port, nports)
+	if md.Interface.Ports != nil {
+		m.Ports[0] = cv.convertPort(md.Interface.Ports.Port0)
+		for i, p := range md.Interface.Ports.Tail {
+			m.Ports[i+1] = cv.convertPort(p.Port)
+		}
+	}
 	return m
+}
+
+func (cv *Converter) convertPort(pd *PortDecl) *Port {
+	port := new(Port)
+	port.Decl = pd
+	return port
 }
 
 func (cv *Converter) convertStage(sd *StageDecl) *Stage {
