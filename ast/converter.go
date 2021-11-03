@@ -42,17 +42,38 @@ func (cv *Converter) convertModule(md *ModuleDecl) *Module {
 	}
 	m.Ports = make([]*Port, nports)
 	if md.Interface.Ports != nil {
-		m.Ports[0] = cv.convertPort(md.Interface.Ports.Port0)
+		m.Ports[0] = cv.convertPort(md.Interface.Ports.Port0, nil)
 		for i, p := range md.Interface.Ports.Tail {
-			m.Ports[i+1] = cv.convertPort(p.Port)
+			prevPort := m.Ports[i]
+			m.Ports[i+1] = cv.convertPort(p.Port, prevPort)
 		}
 	}
 	return m
 }
 
-func (cv *Converter) convertPort(pd *PortDecl) *Port {
+func (cv *Converter) convertPort(pd *PortDecl, prevPort *Port) *Port {
 	port := new(Port)
 	port.Decl = pd
+	port.Name = pd.Name
+	if pd.Kind == nil {
+		if prevPort != nil {
+			port.Kind = prevPort.Kind
+		} else {
+			// 1st port must have a kind.
+			return nil
+		}
+	} else {
+		port.Kind = *pd.Kind
+	}
+	if pd.Width == nil {
+		if prevPort != nil {
+			port.Width = prevPort.Width
+		} else {
+			port.Width = 0
+		}
+	} else {
+		port.Width = pd.Width.Width
+	}
 	return port
 }
 

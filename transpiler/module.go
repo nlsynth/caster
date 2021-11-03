@@ -42,39 +42,15 @@ func newModule(am *ast.Module) *Module {
 
 func (m *Module) preparePorts() {
 	for _, p := range m.am.Ports {
-		m.addPort(p.Decl)
-	}
-	if len(m.ports) == 0 {
-		return
-	}
-	prev := m.ports[len(m.ports)-1]
-	for i := len(m.ports) - 1; i >= 0; i-- {
-		p := m.ports[i]
-		if p.kind == "" {
-			p.kind = prev.kind
-			p.width = prev.width
-		}
-		if p.width < 0 {
-			p.width = prev.width
-		}
-		prev = p
+		m.addPort(p)
 	}
 }
 
-func (m *Module) addPort(decl *ast.PortDecl) {
-	if decl == nil {
-		return
-	}
+func (m *Module) addPort(ap *ast.Port) {
 	p := &Port{}
-	p.name = decl.Name
-	if decl.Kind != nil {
-		p.kind = *decl.Kind
-	}
-	if decl.Width == nil {
-		p.width = -1
-	} else {
-		p.width = decl.Width.Width
-	}
+	p.name = ap.Name
+	p.kind = ap.Kind
+	p.width = ap.Width
 	m.ports = append(m.ports, p)
 }
 

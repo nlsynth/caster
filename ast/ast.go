@@ -16,7 +16,10 @@ type Module struct {
 
 // Port -
 type Port struct {
-	Decl *PortDecl
+	Decl  *PortDecl
+	Name  string
+	Kind  string
+	Width int
 }
 
 // Stage -
