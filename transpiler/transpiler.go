@@ -32,12 +32,25 @@ func (t *Transpiler) TranspileProgram(p *ast.Program) {
 }
 
 // Output outputs transpiled code.
-func (t *Transpiler) Output(w io.Writer) {
+func (t *Transpiler) Output(w io.Writer, withShell bool) {
 	i := newIndenter(w)
 	for _, mt := range t.mt {
 		mt.output(i)
 	}
+	if withShell {
+		t.outputShell(i)
+	}
 	i.flush()
+}
+
+func (t *Transpiler) outputShell(w io.Writer) {
+	r := t.getRootModule()
+	fmt.Fprintf(w, "\n// shell module [%s] here\n", r.m.getName())
+}
+
+func (t *Transpiler) getRootModule() *ModuleTranspiler {
+	// WIP.
+	return t.mt[0]
 }
 
 func newModuleTranspiler(m *Module) *ModuleTranspiler {

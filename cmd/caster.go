@@ -21,7 +21,12 @@ func processFile(fn string, file *os.File, t *transpiler.Transpiler) {
 
 func main() {
 	ofn := flag.String("o", "", "output file name")
+	s := flag.Bool("s", false, "self shell")
 	flag.Parse()
+	withShell := false
+	if s != nil && *s {
+		withShell = true
+	}
 	t := transpiler.NewTranspiler()
 	for _, fn := range flag.Args() {
 		glog.Infof("fn=%v", fn)
@@ -42,5 +47,5 @@ func main() {
 		}
 		defer ow.Close()
 	}
-	t.Output(ow)
+	t.Output(ow, withShell)
 }
