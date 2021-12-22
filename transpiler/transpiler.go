@@ -45,7 +45,13 @@ func (t *Transpiler) Output(w io.Writer, withShell bool) {
 
 func (t *Transpiler) outputShell(w io.Writer) {
 	r := t.getRootModule()
-	fmt.Fprintf(w, "\n// shell module [%s] here\n", r.m.getName())
+	n := r.m.getName()
+	fmt.Fprintf(w, "\n// shell module [%s]\n", n)
+	fmt.Fprintf(w, "`ifdef WITH_SHELL\n")
+	fmt.Fprintf(w, "module %s_shell();\n", n)
+	fmt.Fprintf(w, "  %s %s_inst();\n", n, n)
+	fmt.Fprintf(w, "endmodule  // %s_shell\n", n)
+	fmt.Fprintf(w, "`endif  // WITH_SHELL\n")
 }
 
 func (t *Transpiler) getRootModule() *ModuleTranspiler {
@@ -114,7 +120,11 @@ func (mt *ModuleTranspiler) writeBasicPorts(w io.Writer) {
 }
 
 func (mt *ModuleTranspiler) writePort(p *Port, w io.Writer) {
-	fmt.Fprintf(w, "%v", p.kind)
+	k := p.kind
+	if k == "output" {
+		k = "output reg"
+	}
+	fmt.Fprintf(w, "%v", k)
 	if p.width > 0 {
 		fmt.Fprintf(w, " [%d:0]", p.width-1)
 	}
